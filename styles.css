@@ -592,6 +592,7 @@ h1 {
     justify-content: center;
     gap: 10px;
     margin-bottom: 20px;
+    flex-wrap: wrap; /* Erlaubt den Buttons, sich bei Bedarf umzubrechen */
 }
 
 .mode-selection button {
@@ -603,6 +604,7 @@ h1 {
     cursor: pointer;
     transition: transform 0.2s ease, background-color 0.3s ease;
     color: white;
+    min-width: 150px; /* Mindestbreite für einheitliche Größe */
 }
 
 .mode-selection button:hover {
@@ -690,39 +692,313 @@ h1 {
 }
 
 /* ===========================================================================
-   Responsivität für Spielseiten
+   Responsivität für alle Seiten
    =========================================================================== */
 
-@media (max-width: 500px) {
+/* Für Bildschirme bis 768px (Tablets und kleinere Geräte) */
+@media (max-width: 768px) {
+    /* Allgemeine Anpassungen */
+    body {
+        padding: 10px;
+    }
+
+    /* Startseite (index.html) */
+    .start-container {
+        width: 90%;
+        padding: 15px;
+    }
+
+    .start-container h1 {
+        font-size: 1.5em;
+    }
+
+    .start-container p {
+        font-size: 0.9em;
+    }
+
+    .start-container button {
+        font-size: 0.9em;
+        padding: 8px 15px;
+        max-width: 150px;
+    }
+
+    .login-button {
+        top: 10px;
+        right: 10px;
+        padding: 8px 15px;
+        font-size: 0.9em;
+    }
+
+    /* Spielseiten (start.html, index_football.html, index_youtube.html) */
+    .game-container {
+        width: 90%;
+        padding: 15px;
+    }
+
+    .game-container h1 {
+        font-size: 1.5em;
+    }
+
+    #message {
+        font-size: 0.9em;
+    }
+
     .comparison-container {
         flex-direction: column;
-        gap: 10px;
+        gap: 15px;
     }
+
     .person {
         width: 100%;
-        min-height: auto; /* Für kleinere Bildschirme anpassen */
+        min-height: auto;
     }
+
     .person img {
         width: 100px;
         height: 100px;
     }
+
+    .person p {
+        font-size: 0.9em;
+    }
+
     .vs {
         font-size: 1.5em;
     }
-    .leaderboard {
-        position: static;
-        transform: none;
-        margin: 20px auto;
-        width: 80%;
+
+    .button-container {
+        gap: 10px !important;
     }
+
+    .button-container button {
+        font-size: 0.9em;
+        padding: 8px 15px;
+    }
+
+    .decoration-line {
+        width: 90%;
+    }
+
+    #main-menu, #high-score {
+        width: 100px;
+        padding: 8px 10px;
+        font-size: 0.9em;
+        bottom: 10px;
+    }
+
+    #main-menu {
+        left: 10px;
+    }
+
+    #high-score {
+        right: 10px;
+    }
+
+    /* Modal */
+    .modal-content {
+        width: 90%;
+        margin: 0 auto;
+    }
+
+    .modal-title {
+        font-size: 1.2em;
+    }
+
+    .modal-body input {
+        font-size: 0.9em;
+    }
+
+    .btn-primary, .btn-secondary, .btn-restart {
+        font-size: 0.9em;
+        padding: 8px 15px;
+    }
+
+    /* Bestenliste (leaderboard.html) */
+    .leaderboard-container {
+        width: 90%;
+        padding: 15px;
+    }
+
+    .leaderboard-container h1 {
+        font-size: 1.5em;
+    }
+
     .mode-selection {
         flex-direction: column;
         gap: 10px;
+        align-items: center; /* Zentriert die Buttons horizontal */
     }
+
     .mode-selection button {
-        width: 100%;
+        font-size: 0.9em;
+        padding: 8px 15px;
+        width: 80%; /* Buttons nehmen 80% der Breite ein */
+        max-width: 250px; /* Maximale Breite für größere Bildschirme */
+    }
+
+    .leaderboard-entry {
+        font-size: 0.9em;
+        padding: 8px;
+    }
+
+    #backToMenu {
+        font-size: 0.9em;
+        padding: 8px 15px;
+    }
+}
+
+/* Für Bildschirme bis 500px (Handys) */
+@media (max-width: 500px) {
+    /* Startseite (index.html) */
+    .start-container {
+        width: 95%;
+        padding: 10px;
+    }
+
+    .start-container h1 {
+        font-size: 1.3em;
+    }
+
+    .start-container p {
+        font-size: 0.8em;
+    }
+
+    .start-container button {
+        font-size: 0.8em;
+        padding: 6px 10px;
+        max-width: 120px;
+    }
+
+    .login-button {
+        top: 5px;
+        right: 5px;
+        padding: 6px 10px;
+        font-size: 0.8em;
+    }
+
+    /* Spielseiten (start.html, index_football.html, index_youtube.html) */
+    .game-container {
+        width: 95%;
+        padding: 10px;
+    }
+
+    .game-container h1 {
+        font-size: 1.3em;
+    }
+
+    #message {
+        font-size: 0.8em;
+    }
+
+    .comparison-container {
+        gap: 10px;
+    }
+
+    .person img {
+        width: 80px;
+        height: 80px;
+    }
+
+    .person p {
+        font-size: 0.8em;
+    }
+
+    .vs {
+        font-size: 1.2em;
+    }
+
+    .button-container button {
+        font-size: 0.8em;
+        padding: 6px 10px;
+    }
+
+    #main-menu, #high-score {
+        width: 90px; /* Etwas größer für bessere Lesbarkeit */
+        padding: 8px 10px;
+        font-size: 0.9em;
+        bottom: 10px;
+        border-radius: 6px;
+    }
+
+    #main-menu {
+        left: 10px;
+    }
+
+    #high-score {
+        right: 10px;
+    }
+
+    /* Modal */
+    .modal-title {
+        font-size: 1em;
+    }
+
+    .modal-body input {
+        font-size: 0.8em;
+    }
+
+    .btn-primary, .btn-secondary, .btn-restart {
+        font-size: 0.8em;
+        padding: 6px 10px;
+    }
+
+    /* Bestenliste (leaderboard.html) */
+    .leaderboard-container {
+        width: 95%;
+        padding: 10px;
+    }
+
+    .leaderboard-container h1 {
+        font-size: 1.3em;
+    }
+
+    .mode-selection button {
+        font-size: 0.8em;
+        padding: 6px 10px;
+        width: 90%; /* Buttons nehmen 90% der Breite ein */
         max-width: 200px;
-        margin: 0 auto;
+    }
+
+    .leaderboard-entry {
+        font-size: 0.8em;
+        padding: 6px;
+    }
+
+    #backToMenu {
+        font-size: 0.8em;
+        padding: 6px 10px;
+    }
+}
+
+/* Für sehr kleine Bildschirme (unter 400px) */
+@media (max-width: 400px) {
+    .start-container h1, .game-container h1, .leaderboard-container h1 {
+        font-size: 1.1em;
+    }
+
+    .person img {
+        width: 70px;
+        height: 70px;
+    }
+
+    .person p {
+        font-size: 0.7em;
+    }
+
+    .vs {
+        font-size: 1em;
+    }
+
+    #main-menu, #high-score {
+        width: 80px;
+        font-size: 0.8em;
+    }
+
+    .mode-selection button {
+        font-size: 0.7em;
+        padding: 6px 10px;
+        width: 95%; /* Buttons nehmen fast die gesamte Breite ein */
+        max-width: 180px;
     }
 }
 
@@ -743,8 +1019,6 @@ h1 {
     background-color: #555;
     transform: translateY(-3px);
 }
-
-/* Bestehender Code in styles.css bleibt unverändert, füge nur das Folgende am Ende hinzu */
 
 /* Styling für Modus-Buttons */
 .mode-selection button {
