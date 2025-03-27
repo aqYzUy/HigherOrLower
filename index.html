@@ -3,70 +3,131 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Higher or Lower - Follower Edition</title>
+    <title>Higher or Lower</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-    <script defer src="HigherOrLower.js"></script>
 </head>
 <body>
-    <div id="game-container" class="game-container follower">
-        <h1>Higher or Lower - Follower Edition</h1>
-        <div class="score-container">
-            <p id="score">Punkte: 0</p>
-        </div>
-        <p id="message">Hat die nächste Person mehr oder weniger Follower?</p>
-        
-        <div class="comparison-container">
-            <div class="person left-person">
-                <img id="left-image" src="" alt="Person 1">
-                <p id="left-name"></p>
-                <p id="left-value"></p>
+    <div class="start-container">
+        <h1>HIGHER OR LOWER</h1>
+        <p>Willkommen! Wähle einen Spielmodus, um loszulegen.</p>
+        <div class="button-container row g-3">
+            <div class="col-12 col-md-4">
+                <button id="followerButton">Follower Edition</button>
             </div>
-            <div class="vs">VS</div>
-            <div class="person right-person">
-                <img id="right-image" src="" alt="Person 2">
-                <p id="right-name"></p>
+            <div class="col-12 col-md-4">
+                <button id="footballButton">Football Goals</button>
+            </div>
+            <div class="col-12 col-md-4">
+                <button id="youtubeButton">YouTube Subscribers</button>
             </div>
         </div>
-        
-        <div class="button-container d-flex justify-content-center gap-3">
-            <button id="higher" class="btn btn-success">Höher</button>
-            <button id="lower" class="btn btn-danger">Niedriger</button>
-        </div>
-        <div class="decoration-line"></div>
+        <button id="leaderboardButton" class="leaderboard-button">Bestenliste</button>
     </div>
-    
-    <div class="modal fade" id="gameOverModal" tabindex="-1" aria-labelledby="gameOverModalLabel" aria-hidden="true">
+
+    <button class="login-button" data-bs-toggle="modal" data-bs-target="#usernameModal">Eintragen</button>
+
+    <!-- Modal für Benutzername-Eingabe -->
+    <div class="modal fade" id="usernameModal" tabindex="-1" aria-labelledby="usernameModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content animate-modal">
+            <div class="modal-content">
                 <div class="modal-header">
-                    <h2 class="modal-title game-over-text" id="gameOverModalLabel">Game Over!</h2>
+                    <h5 class="modal-title" id="usernameModalLabel">Spielername eingeben</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p id="final-score"></p>
-                    <p id="final-message"></p>
+                    <input type="text" id="usernameInput" class="form-control" placeholder="Dein Name" required>
                 </div>
                 <div class="modal-footer">
-                    <button id="restart" class="btn btn-restart">Neustart</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
+                    <button type="button" id="saveUsername" class="btn btn-primary">Speichern</button>
                 </div>
             </div>
         </div>
-    </div>
-
-    <div id="high-score" class="high-score">
-        <p>High Score: <span id="high-score-value">0</span></p>
-    </div>
-
-    <div id="main-menu" class="high-score">
-        <button id="mainMenuButton">Hauptmenü</button>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script>
-        document.getElementById("mainMenuButton").addEventListener("click", function() {
-            window.location.href = "start.html";
+        // Funktion zum Aktualisieren der Bestenlisten
+        function updateLeaderboards(oldUsername, newUsername) {
+            const leaderboards = ["leaderboardFollower", "leaderboardFootball", "leaderboardYouTube"];
+            leaderboards.forEach(leaderboardKey => {
+                let leaderboard = JSON.parse(localStorage.getItem(leaderboardKey)) || [];
+                leaderboard = leaderboard.map(entry => {
+                    if (entry.name === oldUsername) {
+                        return { ...entry, name: newUsername };
+                    }
+                    return entry;
+                });
+                localStorage.setItem(leaderboardKey, JSON.stringify(leaderboard));
+            });
+            // Storage-Event auslösen, um Bestenliste in anderen Tabs zu aktualisieren
+            window.dispatchEvent(new Event("storage"));
+        }
+
+        // Benutzername speichern und Bestenliste aktualisieren
+        document.getElementById("saveUsername").addEventListener("click", function() {
+            const usernameInput = document.getElementById("usernameInput").value.trim();
+            if (usernameInput === "") {
+                alert("Bitte gib einen Benutzernamen ein!");
+                return;
+            }
+
+            // Alter Benutzername aus localStorage holen
+            const oldUsername = localStorage.getItem("playerName") || "Anonym";
+
+            // Neuer Benutzername speichern
+            localStorage.setItem("playerName", usernameInput);
+
+            // Bestenlisten aktualisieren: Alten Benutzernamen durch neuen ersetzen
+            if (oldUsername !== usernameInput) {
+                updateLeaderboards(oldUsername, usernameInput);
+            }
+
+            const usernameModal = bootstrap.Modal.getInstance(document.getElementById("usernameModal"));
+            usernameModal.hide();
+            // Ändere den Text des Eintragen-Buttons zum Benutzernamen
+            document.querySelector(".login-button").textContent = usernameInput;
         });
+
+        // Beim Öffnen des Modals den aktuellen Benutzernamen einfügen
+        document.getElementById("usernameModal").addEventListener("show.bs.modal", function() {
+            const currentUsername = localStorage.getItem("playerName") || "";
+            document.getElementById("usernameInput").value = currentUsername;
+        });
+
+        // Spielmodi-Buttons
+        function checkUsernameAndRedirect(url) {
+            const username = localStorage.getItem("playerName");
+            if (!username) {
+                const usernameModal = new bootstrap.Modal(document.getElementById("usernameModal"));
+                usernameModal.show();
+            } else {
+                window.location.href = url;
+            }
+        }
+
+        document.getElementById("followerButton").addEventListener("click", function() {
+            checkUsernameAndRedirect("index.html");
+        });
+        document.getElementById("footballButton").addEventListener("click", function() {
+            checkUsernameAndRedirect("index_football.html");
+        });
+        document.getElementById("youtubeButton").addEventListener("click", function() {
+            checkUsernameAndRedirect("index_youtube.html");
+        });
+
+        // Bestenliste-Button
+        document.getElementById("leaderboardButton").addEventListener("click", function() {
+            window.location.href = "leaderboard.html";
+        });
+
+        // Eintragen-Button Text aktualisieren, wenn ein Benutzername vorhanden ist
+        const username = localStorage.getItem("playerName");
+        if (username) {
+            document.querySelector(".login-button").textContent = username;
+        }
     </script>
 </body>
 </html>
