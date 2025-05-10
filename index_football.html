@@ -3,70 +3,112 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Higher or Lower - Football Goals Edition</title>
+    <title>Higher or Lower - Football Edition</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="styles.css">
-    <script defer src="HigherOrLowerFootball.js"></script>
 </head>
 <body>
     <div id="game-container" class="game-container football">
-        <h1>Higher or Lower - Football Goals Edition</h1>
-        <div class="score-container">
-            <p id="score">Punkte: 0</p>
-        </div>
-        <p id="message">Hat der nächste Spieler mehr oder weniger Tore?</p>
-        
-        <div class="comparison-container">
-            <div class="person left-person">
-                <img id="left-image" src="" alt="Spieler 1">
-                <p id="left-name"></p>
-                <p id="left-value"></p>
-            </div>
-            <div class="vs">VS</div>
-            <div class="person right-person">
-                <img id="right-image" src="" alt="Spieler 2">
-                <p id="right-name"></p>
+        <div class="progress-container">
+            <div class="progress">
+                <div id="progress-bar" class="progress-bar progress-bar-striped progress-bar-animated bg-primary" role="progressbar" style="width: 100%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="75"></div>
             </div>
         </div>
-        
+        <header class="header text-center">
+            <h1 class="title">HIGHER OR LOWER - FOOTBALL EDITION</h1>
+            <p class="subtitle">Vergleiche die Follower-Zahlen der Fußballstars!</p>
+        </header>
+        <div class="score-container text-center">
+            <p id="score" class="score-text"><i class="fas fa-star"></i> Punkte: <span class="score-value">0</span></p>
+        </div>
+        <p id="message" class="game-message text-center">Hat der nächste Spieler mehr oder weniger Follower?</p>
+        <div class="comparison-container d-flex justify-content-center">
+            <div class="person-card left-person">
+                <img id="left-image" src="" alt="Spieler 1" class="person-img">
+                <h4 id="left-name" class="person-name"></h4>
+                <p id="left-value" class="person-value"></p>
+                <button class="btn btn-info btn-sm hint-btn" data-bs-toggle="modal" data-bs-target="#hintModalLeft">Hinweis <i class="fas fa-lightbulb"></i></button>
+            </div>
+            <div class="vs-container">
+                <div class="vs">VS</div>
+            </div>
+            <div class="person-card right-person">
+                <img id="right-image" src="" alt="Spieler 2" class="person-img">
+                <h4 id="right-name" class="person-name"></h4>
+                <p id="right-value" class="person-value">???</p>
+                <button class="btn btn-info btn-sm hint-btn" data-bs-toggle="modal" data-bs-target="#hintModalRight">Hinweis <i class="fas fa-lightbulb"></i></button>
+            </div>
+        </div>
         <div class="button-container d-flex justify-content-center gap-3">
-            <button id="higher" class="btn btn-success">Höher</button>
-            <button id="lower" class="btn btn-danger">Niedriger</button>
+            <button id="higher" class="btn btn-success btn-lg">Höher <i class="fas fa-arrow-up"></i></button>
+            <button id="lower" class="btn btn-danger btn-lg">Niedriger <i class="fas fa-arrow-down"></i></button>
         </div>
         <div class="decoration-line"></div>
+        <div class="stats-container text-center">
+            <p>Streak: <span id="streak">0</span></p>
+            <p>High Score: <span id="high-score-display">0</span></p>
+        </div>
     </div>
-    
-    <div class="modal fade" id="gameOverModal" tabindex="-1" aria-labelledby="gameOverModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content animate-modal">
+
+    <div class="modal fade" id="hintModalLeft" tabindex="-1" aria-labelledby="hintModalLabelLeft" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content bg-dark text-white">
                 <div class="modal-header">
-                    <h2 class="modal-title game-over-text" id="gameOverModalLabel">Game Over!</h2>
+                    <h5 class="modal-title" id="hintModalLabelLeft">Hinweis</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <p id="final-score"></p>
-                    <p id="final-message"></p>
-                </div>
+                <div class="modal-body" id="hintTextLeft"></div>
                 <div class="modal-footer">
-                    <button id="restart" class="btn btn-restart">Neustart</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Schließen</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <div id="high-score" class="high-score">
-        <p>High Score: <span id="high-score-value">0</span></p>
+    <div class="modal fade" id="hintModalRight" tabindex="-1" aria-labelledby="hintModalLabelRight" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content bg-dark text-white">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="hintModalLabelRight">Hinweis</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="hintTextRight"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Schließen</button>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div id="main-menu" class="high-score">
-        <button id="mainMenuButton">Hauptmenü</button>
+    <div class="modal fade" id="gameOverModal" tabindex="-1" aria-labelledby="gameOverModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content bg-dark text-white">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="gameOverModalLabel">GAME OVER!</h2>
+                </div>
+                <div class="modal-body text-center">
+                    <p id="final-score" class="display-4"><i class="fas fa-trophy"></i> <span class="score-value"></span></p>
+                    <p id="final-message" class="lead"></p>
+                </div>
+                <div class="modal-footer d-flex justify-content-center gap-3">
+                    <button id="restart" class="btn btn-success btn-lg">Neustart <i class="fas fa-redo"></i></button>
+                    <button id="share" class="btn btn-info btn-lg">Teilen <i class="fas fa-share"></i></button>
+                    <button id="mainMenu" class="btn btn-secondary btn-lg">Hauptmenü <i class="fas fa-home"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<div class="high-score" id="high-score">
+        <p>High Score: <span id="high-score-value" aria-live="polite">0</span></p>
+    </div>
+    <div id="main-menu">
+        <a href="index.html" class="btn btn-secondary">Hauptmenü</a>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <script>
-        document.getElementById("mainMenuButton").addEventListener("click", function() {
-            window.location.href = "index.html";
-        });
-    </script>
+    <script type="module" src="HigherOrLowerFootball.js"></script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93d4133d9d12bfb3',t:'MTc0NjgyMzg4OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </body>
 </html>

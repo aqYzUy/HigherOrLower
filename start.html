@@ -3,70 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Spiele Higher or Lower - Follower Edition und vergleiche die Follower-Zahlen von Prominenten!">
+    <meta name="keywords" content="Higher or Lower, Follower Edition, Spiel, Social Media, Prominente">
+    <meta name="author" content="Dein Name">
     <title>Higher or Lower - Follower Edition</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="styles.css">
-    <script defer src="HigherOrLower.js"></script>
 </head>
 <body>
-    <div id="game-container" class="game-container follower">
-        <h1>Higher or Lower - Follower Edition</h1>
-        <div class="score-container">
-            <p id="score">Punkte: 0</p>
-        </div>
-        <p id="message">Hat die nächste Person mehr oder weniger Follower?</p>
-        
-        <div class="comparison-container">
-            <div class="person left-person">
-                <img id="left-image" src="" alt="Person 1">
-                <p id="left-name"></p>
-                <p id="left-value"></p>
-            </div>
-            <div class="vs">VS</div>
-            <div class="person right-person">
-                <img id="right-image" src="" alt="Person 2">
-                <p id="right-name"></p>
+    <div id="game-container" class="game-container follower" role="main" aria-label="Spielbereich Follower Edition">
+        <div class="progress-container">
+            <div class="progress" role="progressbar" aria-label="Zeitfortschritt" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                <div id="progress-bar" class="progress-bar progress-bar-striped progress-bar-animated bg-success"></div>
             </div>
         </div>
-        
+        <header class="header text-center">
+            <h1 class="title">HIGHER OR LOWER - FOLLOWER EDITION</h1>
+            <p class="subtitle">Vergleiche die Follower-Zahlen der Stars!</p>
+        </header>
+        <div class="score-container text-center">
+            <p id="score" class="score-text"><i class="fas fa-star" aria-hidden="true"></i> Punkte: <span class="score-value" aria-live="polite">0</span></p>
+        </div>
+        <p id="message" class="game-message text-center" aria-live="assertive">Hat die nächste Person mehr oder weniger Follower?</p>
+        <div class="comparison-container d-flex justify-content-center">
+            <div class="person-card left-person" role="region" aria-label="Person 1">
+                <img id="left-image" src="" alt="" class="person-img" loading="lazy">
+                <h4 id="left-name" class="person-name"></h4>
+                <p id="left-value" class="person-value"></p>
+                <button class="btn btn-info btn-sm hint-btn" data-bs-toggle="modal" data-bs-target="#hintModalLeft" aria-label="Hinweis für Person 1 anzeigen">Hinweis <i class="fas fa-lightbulb" aria-hidden="true"></i></button>
+            </div>
+            <div class="vs-container">
+                <div class="vs" aria-hidden="true">VS</div>
+            </div>
+            <div class="person-card right-person" role="region" aria-label="Person 2">
+                <img id="right-image" src="" alt="" class="person-img" loading="lazy">
+                <h4 id="right-name" class="person-name"></h4>
+                <p id="right-value" class="person-value">???</p>
+                <button class="btn btn-info btn-sm hint-btn" data-bs-toggle="modal" data-bs-target="#hintModalRight" aria-label="Hinweis für Person 2 anzeigen">Hinweis <i class="fas fa-lightbulb" aria-hidden="true"></i></button>
+            </div>
+        </div>
         <div class="button-container d-flex justify-content-center gap-3">
-            <button id="higher" class="btn btn-success">Höher</button>
-            <button id="lower" class="btn btn-danger">Niedriger</button>
+            <button id="higher" class="btn btn-success btn-lg" aria-label="Höher wählen">Höher <i class="fas fa-arrow-up" aria-hidden="true"></i></button>
+            <button id="lower" class="btn btn-danger btn-lg" aria-label="Niedriger wählen">Niedriger <i class="fas fa-arrow-down" aria-hidden="true"></i></button>
         </div>
-        <div class="decoration-line"></div>
+        <div class="decoration-line" aria-hidden="true"></div>
+        <div class="stats-container text-center">
+            <p>High Score: <span id="high-score-value" aria-live="polite">0</span></p>
+        </div>
     </div>
-    
-    <div class="modal fade" id="gameOverModal" tabindex="-1" aria-labelledby="gameOverModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content animate-modal">
+
+    <div class="high-score" id="high-score">
+        <p>High Score: <span id="high-score-value" aria-live="polite">0</span></p>
+    </div>
+    <div id="main-menu">
+        <a href="index.html" class="btn btn-secondary">Hauptmenü</a>
+    </div>
+
+    <div class="modal fade" id="hintModalLeft" tabindex="-1" aria-labelledby="hintModalLabelLeft" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content bg-dark text-white">
                 <div class="modal-header">
-                    <h2 class="modal-title game-over-text" id="gameOverModalLabel">Game Over!</h2>
+                    <h5 class="modal-title" id="hintModalLabelLeft">Hinweis</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="hintTextLeft"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Schließen</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="hintModalRight" tabindex="-1" aria-labelledby="hintModalLabelRight" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content bg-dark text-white">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="hintModalLabelRight">Hinweis</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="hintTextRight"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Schließen</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="gameOverModal" tabindex="-1" aria-labelledby="gameOverModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content bg-dark text-white">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="gameOverModalLabel">Game Over</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <p id="final-score"></p>
                     <p id="final-message"></p>
                 </div>
                 <div class="modal-footer">
-                    <button id="restart" class="btn btn-restart">Neustart</button>
+                    <button id="restart" class="btn btn-primary">Neustart</button>
+                    <button id="share" class="btn btn-info">Teilen</button>
+                    <button id="mainMenu" class="btn btn-secondary">Hauptmenü</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <div id="high-score" class="high-score">
-        <p>High Score: <span id="high-score-value">0</span></p>
-    </div>
-
-    <div id="main-menu" class="high-score">
-        <button id="mainMenuButton">Hauptmenü</button>
-    </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <script>
-        document.getElementById("mainMenuButton").addEventListener("click", function() {
-            window.location.href = "index.html";
-        });
-    </script>
+    <script src="HigherOrLower.js"></script>
 </body>
 </html>
